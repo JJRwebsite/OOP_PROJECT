@@ -4,57 +4,51 @@ class EmployeeRoster {
     private array $roster;
     private int $maxSize;
 
-    // Constructor to initialize the roster with a given size
+
     public function __construct($size) {
-        $this->roster = array_fill(0, $size, null);  // Initialize roster with null values for available slots
+        $this->roster = array_fill(0, $size, null);
         $this->maxSize = $size;
     }
 
-    // Getter method to access the roster array
+
     public function getRoster() {
         return $this->roster;
     }
 
-    // Add an employee to the roster
+
     public function add($employee) {
-        // Find the first available slot (null)
         foreach ($this->roster as $index => $currentEmployee) {
             if ($currentEmployee === null) {
-                $this->roster[$index] = $employee;  // Add the employee in the empty slot
+                $this->roster[$index] = $employee;
                 echo "Employee added successfully.\n";
                 return;
             }
         }
 
-        // If no available slot is found, the roster is full
         echo "Roster is full.\n";
     }
 
     public function remove($index) {
         if (isset($this->roster[$index]) && $this->roster[$index] !== null) {
-            // Mark the slot as empty (null) instead of removing the element
             $this->roster[$index] = null;
             echo "Employee removed successfully.\n";
         } else {
-            echo "Slot is empty.\n";  // If the slot is already empty
+            echo "Slot is empty.\n";
         }
     }
 
-    // Count the number of employees in the roster (excluding nulls)
     public function count() {
         return count(array_filter($this->roster, fn($employee) => $employee !== null));
     }
 
     public function display() {
-        // Check if the roster is empty or all entries are null
         if (empty($this->roster) || count(array_filter($this->roster)) === 0) {
             echo "No employees have been added.\n";
-            return; // Exit the function
+            return; 
         }
     
-        // Loop through and display each employee
         foreach ($this->roster as $index => $employee) {
-            if ($employee !== null) {  // Skip null values
+            if ($employee !== null) { 
                 $employeeType = $this->getEmployeeType($employee);
                 echo "Employee #" . ($index + 1) . " - ";
                 echo "Name: " . $employee->getName() . ", ";
@@ -70,14 +64,12 @@ class EmployeeRoster {
     public function payroll() {
         echo "* Employee Payroll *\n";
     
-        // Check if the roster is empty or all entries are null
         if (empty($this->roster) || count(array_filter($this->roster)) === 0) {
             echo "No employees have been added.\n";
-            return; // Exit the function
+            return;
         }
     
         foreach ($this->roster as $index => $employee) {
-            // Skip if the employee is null
             if ($employee === null) {
                 continue;
             }
@@ -109,13 +101,10 @@ class EmployeeRoster {
     
     
     
-    // Display the available space for adding more employees
     public function availableSpace() {
-        // Count the available slots (null values)
         return count(array_filter($this->roster, fn($employee) => $employee === null));
     }
 
-    // Display employee by type (Commission, Hourly, PieceWorker)
     public function displayByType($type) {
         $found = false;
         foreach ($this->roster as $index => $employee) {
@@ -135,7 +124,6 @@ class EmployeeRoster {
         }
     }
 
-    // Helper method to get the type of employee
     private function getEmployeeType($employee) {
         if ($employee instanceof CommissionEmployee) {
             return "Commission Employee";
@@ -147,7 +135,6 @@ class EmployeeRoster {
         return "Unknown Type";
     }
 
-    // Display employee count by type
     public function displayEmployeeCountByType() {
         echo "*** Employee Count by Type ***\n";
         echo "Commission Employees: " . $this->countByType('CommissionEmployee') . "\n";
@@ -155,7 +142,6 @@ class EmployeeRoster {
         echo "Piece Workers: " . $this->countByType('PieceWorker') . "\n";
     }
 
-    // Count total employees of each type
     public function countEmployeesByType() {
         echo "*** Employee Count by Type ***\n";
         echo "Total Commission Employees: " . $this->countByType('CommissionEmployee') . "\n";
@@ -163,7 +149,6 @@ class EmployeeRoster {
         echo "Total Piece Workers: " . $this->countByType('PieceWorker') . "\n";
     }
 
-    // Count employees of a specific type
     public function countByType($type) {
         return count(array_filter($this->roster, fn($employee) => get_class($employee) === $type));
     }
