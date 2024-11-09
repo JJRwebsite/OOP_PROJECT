@@ -45,8 +45,14 @@ class EmployeeRoster {
         return count(array_filter($this->roster, fn($employee) => $employee !== null));
     }
 
-    // Display all employees (excluding nulls)
     public function display() {
+        // Check if the roster is empty or all entries are null
+        if (empty($this->roster) || count(array_filter($this->roster)) === 0) {
+            echo "No employees have been added.\n";
+            return; // Exit the function
+        }
+    
+        // Loop through and display each employee
         foreach ($this->roster as $index => $employee) {
             if ($employee !== null) {  // Skip null values
                 $employeeType = $this->getEmployeeType($employee);
@@ -59,11 +65,16 @@ class EmployeeRoster {
             }
         }
     }
-    // Display employee payroll details (including regular salary, hours worked, etc.)
-public function payroll() {
+    
+
+    public function payroll() {
         echo "* Employee Payroll *\n";
     
-        
+        // Check if the roster is empty or all entries are null
+        if (empty($this->roster) || count(array_filter($this->roster)) === 0) {
+            echo "No employees have been added.\n";
+            return; // Exit the function
+        }
     
         foreach ($this->roster as $index => $employee) {
             // Skip if the employee is null
@@ -94,8 +105,9 @@ public function payroll() {
     
             echo "Earnings: $" . number_format($earnings, 2) . "\n";
         }
-    
     }
+    
+    
     
     // Display the available space for adding more employees
     public function availableSpace() {
