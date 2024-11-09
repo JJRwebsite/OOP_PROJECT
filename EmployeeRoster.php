@@ -61,38 +61,42 @@ class EmployeeRoster {
     }
     // Display employee payroll details (including regular salary, hours worked, etc.)
 public function payroll() {
-    echo "* Employee Payroll *\n";
-    foreach ($this->roster as $index => $employee) {
-        echo "Employee #" . ($index + 1) . " - ";
-        echo "Name: " . $employee->getName() . ", ";
-        echo "Address: " . $employee->getAddress() . ", ";
-        echo "Age: " . $employee->getAge() . ", ";
-        echo "Company: " . $employee->getCompanyName() . ", ";
-
-        // Check the employee type and display appropriate details
-        if ($employee instanceof CommissionEmployee) {
-            echo "Regular Salary: " . $employee->getRegularSalary() . ", ";
-            echo "Items Sold: " . $employee->getItemsSold() . ", ";
-            echo "Commission Rate: " . $employee->getCommissionRate() . ", ";
-            // Payroll calculation for commission-based employees
-            $earnings = $employee->getRegularSalary() + ($employee->getItemsSold() * $employee->getCommissionRate());
-        } elseif ($employee instanceof HourlyEmployee) {
-            echo "Hours Worked: " . $employee->getHoursWorked() . ", ";
-            echo "Hourly Rate: " . $employee->getRate() . ", ";
-            // Payroll calculation for hourly employees
-            $earnings = $employee->getHoursWorked() * $employee->getRate();
-        } elseif ($employee instanceof PieceWorker) {
-            echo "Items Finished: " . $employee->getNumberItems() . ", ";
-            echo "Wage Per Item: " . $employee->getWagePerItem() . ", ";
-            // Payroll calculation for piece workers
-            $earnings = $employee->getNumberItems() * $employee->getWagePerItem();
+        echo "* Employee Payroll *\n";
+    
+        
+    
+        foreach ($this->roster as $index => $employee) {
+            // Skip if the employee is null
+            if ($employee === null) {
+                continue;
+            }
+    
+            echo "Employee #" . ($index + 1) . " - ";
+            echo "Name: " . $employee->getName() . ", ";
+            echo "Address: " . $employee->getAddress() . ", ";
+            echo "Age: " . $employee->getAge() . ", ";
+            echo "Company: " . $employee->getCompanyName() . ", ";
+    
+            if ($employee instanceof CommissionEmployee) {
+                echo "Regular Salary: " . $employee->getRegularSalary() . ", ";
+                echo "Items Sold: " . $employee->getItemsSold() . ", ";
+                echo "Commission Rate: " . $employee->getCommissionRate() . ", ";
+                $earnings = $employee->getRegularSalary() + ($employee->getItemsSold() * $employee->getCommissionRate());
+            } elseif ($employee instanceof HourlyEmployee) {
+                echo "Hours Worked: " . $employee->getHoursWorked() . ", ";
+                echo "Hourly Rate: " . $employee->getRate() . ", ";
+                $earnings = $employee->getHoursWorked() * $employee->getRate();
+            } elseif ($employee instanceof PieceWorker) {
+                echo "Items Finished: " . $employee->getNumberItems() . ", ";
+                echo "Wage Per Item: " . $employee->getWagePerItem() . ", ";
+                $earnings = $employee->getNumberItems() * $employee->getWagePerItem();
+            }
+    
+            echo "Earnings: $" . number_format($earnings, 2) . "\n";
         }
-
-        // Display earnings for the employee
-        echo "Earnings: $" . number_format($earnings, 2) . "\n";
+    
     }
-}
-
+    
     // Display the available space for adding more employees
     public function availableSpace() {
         // Count the available slots (null values)
